@@ -1,0 +1,10 @@
+This would be configured in ~/.ssh/config
+
+
+Host 192.168.2.51
+	HostKeyAlgorithms +ssh-rsa
+	KexAlgorithms +diffie-hellman-group-exchange-sha1
+
+Host 192.168.2.52
+	HostKeyAlgorithms +ssh-rsa
+	KexAlgorithms +diffie-hellman-group-exchange-sha1
