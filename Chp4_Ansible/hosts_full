@@ -1,0 +1,6 @@
+[fourth_floor_devices]
+ansible-1
+ansible-2
+
+[iosxe_devices:children]
+fourth_floor_devices
