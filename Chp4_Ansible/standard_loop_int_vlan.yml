@@ -1,0 +1,24 @@
+---
+- name: Add Multiple SVI's
+  hosts: "ansible-1"
+  gather_facts: false
+  connection: network_cli
+  vars:
+    vlans: {
+      "82": {"description": "82 network", "ip": "192.168.82.1 255.255.255.0"},
+      "83": {"description": "83 network", "ip": "192.168.83.1 255.255.255.0"},
+      "84": {"description": "84 network", "ip": "192.168.84.1 255.255.255.0"}
+    }
+  tasks:
+    - name: add vlans
+      ios_config:
+        lines:
+         - vlan {{ item.key }}
+      with_dict: "{{ vlans }}"
+    - name: configure vlans
+      ios_config:
+        lines:
+          - description {{ item.value.description }}
+          - ip address {{ item.value.ip }}
+        parents: interface vlan {{ item.key }}
+      with_dict: "{{ vlans }}"        

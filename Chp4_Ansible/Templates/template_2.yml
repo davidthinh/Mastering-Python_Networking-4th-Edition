@@ -1,0 +1,36 @@
+---
+- name: Template Looping
+  hosts: localhost
+
+
+  vars:
+    iosxe_devices: {
+        "ansible-1": {
+            "hostname": "ansible-1",
+            "username": "cisco",
+            "password": "cisco",
+            "vlans": [100, 200, 300],
+            "l3_vlan_interfaces": True,
+            "vlan_interfaces": [
+                {"int_num": "100", "ip": "192.168.10.1"},
+                {"int_num": "200", "ip": "192.168.20.1"},
+                {"int_num": "300", "ip": "192.168.30.1"}
+            ],
+            "netflow_enable": True            
+        },
+        "ansible-2": {
+            "hostname": "ansible-1",
+            "username": "cisco",
+            "password": "cisco",
+            "vlans": [100, 200, 300],
+            "l3_vlan_interfaces": False,
+            "netflow_enable": False            
+        }
+    }
+  
+  tasks:
+    - name: create c9200 configuration files
+      template:
+        src=/home/clewis/Programing/Python/Mastering-Python_Networking-4th-Edition/Chp4_Ansible/Templates/c9200_iosxe.j2
+        dest=/home/clewis/Programing/Python/Mastering-Python_Networking-4th-Edition/Chp4_Ansible/Templates/{{ item.key }}.conf
+      with_dict: "{{ iosxe_devices }}"
